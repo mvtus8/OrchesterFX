@@ -1,0 +1,99 @@
+
+{
+	"hudobne_nastroje": [
+		{
+			"kategoria": "rytmicke",
+			"nazov": "bicie",
+			"cena": 1500,
+			"zvuk": "bum-prásk",
+			"ks": 1,
+			"zvuky": 9
+		},
+		{
+			"kategoria": "rytmicke",
+			"nazov": "perkusie",
+			"cena": 2200,
+			"zvuk": "tap-tap",
+			"ks": 1,
+			"zvuky": 6
+		},
+		{
+			"kategoria": "rytmicke",
+			"nazov": "tamburína",
+			"cena": 300,
+			"zvuk": "ráž-tak",
+			"ks": 1,
+			"zvuky": 4
+		},
+		{
+			"kategoria": "rytmicke",
+			"nazov": "bongo",
+			"cena": 800,
+			"zvuk": "tom-tom",
+			"ks": 1,
+			"zvuky": 2
+		},
+		{
+			"kategoria": "rytmicke",
+			"nazov": "xylofón",
+			"cena": 1200,
+			"zvuk": "ding-dong",
+			"ks": 1,
+			"zvuky": 2
+		},
+		{
+			"kategoria": "dychove",
+			"nazov": "saxofón",
+			"cena": 4500,
+			"zvuk": "turururááá",
+			"ks": 2,
+			"zvuky": 21,
+			"ladenie": "A"
+		},
+		{
+			"kategoria": "dychove",
+			"nazov": "trubka",
+			"cena": 3500,
+			"zvuk": "brbr-bril",
+			"ks": 1,
+			"zvuky": 3,
+			"ladenie": "Bb"
+		},
+		{
+			"kategoria": "dychove",
+			"nazov": "trombon",
+			"cena": 3200,
+			"zvuk": "wou-wou",
+			"ks": 1,
+			"zvuky": 2,
+			"ladenie": "Bb"
+		},
+		{
+			"kategoria": "dychove",
+			"nazov": "klarinet",
+			"cena": 1800,
+			"zvuk": "ti-ti-ti",
+			"ks": 1,
+			"zvuky": 4,
+			"ladenie": "Bb"
+		},
+		{
+			"kategoria": "dychove",
+			"nazov": "flétna",
+			"cena": 1000,
+			"zvuk": "fiu-fiu",
+			"ks": 1,
+			"zvuky": 4,
+			"ladenie": "C"
+		},
+		{
+			"kategoria": "dychove",
+			"nazov": "tuba",
+			"cena": 5000,
+			"zvuk": "buuuum",
+			"ks": 1,
+			"zvuky": 2,
+			"ladenie": "C"
+		}
+	]
+}
