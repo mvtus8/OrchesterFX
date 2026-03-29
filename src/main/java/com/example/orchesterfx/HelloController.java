@@ -43,6 +43,15 @@ public class HelloController {
     private TableColumn<Nastroj, Integer> pocetDierColumn;
 
     @FXML
+    private TextField inputNazov;
+
+    @FXML
+    private TextField inputKs;
+
+    @FXML
+    private TextField inputCena;
+
+    @FXML
     public void initialize() {
         // Set up table columns with property value factories
         druhColumn.setCellValueFactory(new PropertyValueFactory<>("druh"));
@@ -85,6 +94,25 @@ public class HelloController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        // Prefill inputs when selection changes
+        instrumentTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, sel) -> {
+            if (sel != null) {
+                try {
+                    inputNazov.setText(sel.getDruh());
+                    inputKs.setText(String.valueOf(sel.getPocet()));
+                    inputCena.setText(String.valueOf(sel.getCena()));
+                } catch (Exception ex) {
+                    inputNazov.clear();
+                    inputKs.clear();
+                    inputCena.clear();
+                }
+            } else {
+                inputNazov.clear();
+                inputKs.clear();
+                inputCena.clear();
+            }
+        });
     }
 
     @FXML
@@ -229,6 +257,45 @@ public class HelloController {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    protected void onUpdateInstrument() {
+        Nastroj selected = instrumentTableView.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Upraviť nástroj");
+            alert.setHeaderText(null);
+            alert.setContentText("Nie je vybraný žiadny nástroj.");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            String newName = inputNazov.getText().trim();
+            int newKs = Integer.parseInt(inputKs.getText().trim());
+            double newCena = Double.parseDouble(inputCena.getText().trim());
+
+            selected.setDruh(newName);
+            selected.setPocet(newKs);
+            selected.setCena(newCena);
+
+            instrumentTableView.refresh();
+
+            try {
+                JsonSaver.saveInstruments(java.nio.file.Path.of("nastroje.json"), instrumentTableView.getItems());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        } catch (NumberFormatException nfe) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Chyba vstupu");
+            alert.setHeaderText(null);
+            alert.setContentText("Zadajte platné čísla pre ks a cenu.");
+            alert.showAndWait();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }
