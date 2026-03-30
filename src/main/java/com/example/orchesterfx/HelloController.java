@@ -40,9 +40,6 @@ public class HelloController {
 
     @FXML private TextField inputCena;
 
-    @FXML private Button cenabtn;
-    @FXML private Button hrajbtn;
-    @FXML private Button zoznambtn;
     @FXML private TextArea outputArea;
 
     @FXML
@@ -338,8 +335,32 @@ public class HelloController {
         StringBuilder sb = new StringBuilder();
 
         for (Nastroj n : items) {
-            sb.append(String.format("%s -> %s\n", n.getDruh(), n.getZvuk()));
+
+            String pocetZvukov = "-";
+            String ladenie = "-";
+            String pocetDier = "-";
+
+            if (n instanceof RytmickyNastroj r) {
+                pocetZvukov = String.valueOf(r.getPocetZvukov());
+            }
+
+            if (n instanceof DychovyNastroj d) {
+                ladenie = d.getLadenie();
+                pocetDier = String.valueOf(d.getPocetDier());
+            }
+
+            sb.append(String.format(
+                    "%s, počet: %d, cena: %.2f, zvuk: %s, počet zvukov: %s, ladenie: %s, počet dier: %s\n",
+                    n.getDruh(),
+                    n.getPocet(),
+                    n.getCena(),
+                    n.getZvuk(),
+                    pocetZvukov,
+                    ladenie,
+                    pocetDier
+            ));
         }
+
         outputArea.setText(sb.toString());
     }
 }
