@@ -329,5 +329,18 @@ public class HelloController {
     @FXML
     protected void onZoznamBtnClick() {
         Platform.exit();
+        var items = instrumentTableView.getItems();
+
+        if (items == null || items.isEmpty()) {
+            outputArea.setText("Žiadne nástroje v sklade.");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Nastroj n : items) {
+            sb.append(String.format("%s -> %s\n", n.getDruh(), n.getZvuk()));
+        }
+        outputArea.setText(sb.toString());
     }
 }
