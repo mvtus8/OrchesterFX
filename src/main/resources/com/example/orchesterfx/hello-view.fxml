@@ -24,7 +24,7 @@
         </TableView>
         <Button fx:id="cenabtn" layoutX="572.0" layoutY="34.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Cena Skladu" onAction="#onCenaSkladu" />
         <Button fx:id="hrajbtn" layoutX="572.0" layoutY="90.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Sklad Hraj" onAction="#onHrajBtnClick" />
-        <Button fx:id="zoznambtn" layoutX="572.0" layoutY="140.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Sklad Hraj" onAction="#onZoznamBtnClick" />
+        <Button fx:id="zoznambtn" layoutX="572.0" layoutY="140.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Výpis" onAction="#onZoznamBtnClick" />
         <TextField fx:id="inputNazov" layoutX="50.0" layoutY="42.0" />
         <TextField fx:id="inputKs" layoutX="51.0" layoutY="92.0" />
         <TextField fx:id="inputCena" layoutX="52.0" layoutY="143.0" />
