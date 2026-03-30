@@ -5,6 +5,7 @@ import com.example.orchesterfx.model.Nastroj;
 import com.example.orchesterfx.model.RytmickyNastroj;
 import com.example.orchesterfx.util.JsonLoader;
 import com.example.orchesterfx.util.JsonSaver;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -15,41 +16,34 @@ import javafx.scene.layout.GridPane;
 import java.util.Optional;
 
 public class HelloController {
-    @FXML
-    private Label welcomeText;
+    @FXML private Label welcomeText;
 
-    @FXML
-    private TableView<Nastroj> instrumentTableView;
+    @FXML private TableView<Nastroj> instrumentTableView;
 
-    @FXML
-    private TableColumn<Nastroj, String> druhColumn;
+    @FXML private TableColumn<Nastroj, String> druhColumn;
 
-    @FXML
-    private TableColumn<Nastroj, Integer> ksColumn;
+    @FXML private TableColumn<Nastroj, Integer> ksColumn;
 
-    @FXML
-    private TableColumn<Nastroj, Double> cenaColumn;
+    @FXML private TableColumn<Nastroj, Double> cenaColumn;
 
-    @FXML
-    private TableColumn<Nastroj, String> zvukColumn;
+    @FXML private TableColumn<Nastroj, String> zvukColumn;
 
-    @FXML
-    private TableColumn<Nastroj, Integer> pocetZvukovColumn;
+    @FXML private TableColumn<Nastroj, Integer> pocetZvukovColumn;
 
-    @FXML
-    private TableColumn<Nastroj, String> laDenieColumn;
+    @FXML private TableColumn<Nastroj, String> laDenieColumn;
 
-    @FXML
-    private TableColumn<Nastroj, Integer> pocetDierColumn;
+    @FXML private TableColumn<Nastroj, Integer> pocetDierColumn;
 
-    @FXML
-    private TextField inputNazov;
+    @FXML private TextField inputNazov;
 
-    @FXML
-    private TextField inputKs;
+    @FXML private TextField inputKs;
 
-    @FXML
-    private TextField inputCena;
+    @FXML private TextField inputCena;
+
+    @FXML private Button cenabtn;
+    @FXML private Button hrajbtn;
+    @FXML private Button zoznambtn;
+    @FXML private TextArea outputArea;
 
     @FXML
     public void initialize() {
@@ -163,7 +157,6 @@ public class HelloController {
         grid.add(ladenieLabel, 0, 7);
         grid.add(ladenieField, 1, 7);
 
-        // Helper to show/hide fields depending on category
         Runnable updateVisibility = () -> {
             boolean rytmicke = "rytmicke".equals(category.getValue());
             zvukyLabel.setVisible(rytmicke);
@@ -182,7 +175,6 @@ public class HelloController {
             ladenieField.setManaged(!rytmicke);
         };
 
-        // Apply initial visibility and update on category change
         updateVisibility.run();
         category.valueProperty().addListener((obs, oldV, newV) -> updateVisibility.run());
 
@@ -297,5 +289,45 @@ public class HelloController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    @FXML
+    protected void onCenaSkladu() {
+        var items = instrumentTableView.getItems();
+        if (items == null || items.isEmpty()) {
+            outputArea.setText("Žiadne nástroje v sklade.");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        double total = 0.0;
+        for (Nastroj n : items) {
+            double subtotal = n.getCena() * n.getPocet();
+            sb.append(String.format("%s — ks: %d × cena: %.2f = %.2f\n", n.getDruh(), n.getPocet(), n.getCena(),
+                    subtotal));
+            total += subtotal;
+        }
+        sb.append(String.format("\nCelková hodnota skladu: %.2f", total));
+        outputArea.setText(sb.toString());
+    }
+    @FXML
+    protected void onHrajBtnClick() {
+
+        var items = instrumentTableView.getItems();
+
+        if (items == null || items.isEmpty()) {
+            outputArea.setText("Žiadne nástroje v sklade.");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Nastroj n : items) {
+            sb.append(String.format("%s -> %s\n", n.getDruh(), n.getZvuk()));
+        }
+        outputArea.setText(sb.toString());
+    }
+    @FXML
+    protected void onZoznamBtnClick() {
+        Platform.exit();
     }
 }

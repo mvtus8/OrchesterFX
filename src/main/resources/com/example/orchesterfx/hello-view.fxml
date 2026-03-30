@@ -22,8 +22,8 @@
             <TableColumn fx:id="pocetDierColumn" text="počet dier" />
         </columns>
       </TableView>
-      <Button layoutX="572.0" layoutY="54.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Cena Skladu" />
-      <Button layoutX="572.0" layoutY="130.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Sklad Hraj" />
+      <Button fx:id="cenabtn" layoutX="572.0" layoutY="54.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Cena Skladu" onAction="#onCenaSkladu" />
+      <Button fx:id="hrajbtn" layoutX="572.0" layoutY="130.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Sklad Hraj" onAction="#onHrajBtnClick" />
       <TextField fx:id="inputNazov" layoutX="50.0" layoutY="42.0" />
       <TextField fx:id="inputKs" layoutX="51.0" layoutY="92.0" />
       <TextField fx:id="inputCena" layoutX="52.0" layoutY="143.0" />
@@ -34,6 +34,6 @@
       <Button fx:id="addButton" onAction="#onAddInstrument" layoutX="572.0" layoutY="256.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Pridať" />
       <Button fx:id="deleteButton" onAction="#onDeleteInstrument" layoutX="572.0" layoutY="305.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Zmazať" />
       <Button fx:id="updateButton" onAction="#onUpdateInstrument" layoutX="572.0" layoutY="351.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="Upraviť" />
-      <TextArea layoutX="264.0" prefHeight="206.0" prefWidth="258.0" />
+      <TextArea fx:id="outputArea" layoutX="264.0" prefHeight="206.0" prefWidth="258.0" />
    </children>
 </AnchorPane>
