@@ -328,7 +328,6 @@ public class HelloController {
     }
     @FXML
     protected void onZoznamBtnClick() {
-        Platform.exit();
         var items = instrumentTableView.getItems();
 
         if (items == null || items.isEmpty()) {
