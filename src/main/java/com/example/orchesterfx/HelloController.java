@@ -12,45 +12,56 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 
 import java.util.Optional;
 
 public class HelloController {
-    @FXML private Label welcomeText;
 
-    @FXML private TableView<Nastroj> instrumentTableView;
+    @FXML
+    private TableView<Nastroj> instrumentTableView;
 
-    @FXML private TableColumn<Nastroj, String> druhColumn;
+    @FXML
+    private TableColumn<Nastroj, String> druhColumn;
 
-    @FXML private TableColumn<Nastroj, Integer> ksColumn;
+    @FXML
+    private TableColumn<Nastroj, Integer> ksColumn;
 
-    @FXML private TableColumn<Nastroj, Double> cenaColumn;
+    @FXML
+    private TableColumn<Nastroj, Double> cenaColumn;
 
-    @FXML private TableColumn<Nastroj, String> zvukColumn;
+    @FXML
+    private TableColumn<Nastroj, String> zvukColumn;
 
-    @FXML private TableColumn<Nastroj, Integer> pocetZvukovColumn;
+    @FXML
+    private TableColumn<Nastroj, Integer> pocetZvukovColumn;
 
-    @FXML private TableColumn<Nastroj, String> laDenieColumn;
+    @FXML
+    private TableColumn<Nastroj, String> laDenieColumn;
 
-    @FXML private TableColumn<Nastroj, Integer> pocetDierColumn;
+    @FXML
+    private TableColumn<Nastroj, Integer> pocetDierColumn;
 
-    @FXML private TextField inputNazov;
+    @FXML
+    private TextField inputNazov;
 
-    @FXML private TextField inputKs;
+    @FXML
+    private TextField inputKs;
 
-    @FXML private TextField inputCena;
+    @FXML
+    private TextField inputCena;
 
-    @FXML private TextArea outputArea;
+    @FXML
+    private TextArea outputArea;
 
     @FXML
     public void initialize() {
-        // Set up table columns with property value factories
         druhColumn.setCellValueFactory(new PropertyValueFactory<>("druh"));
         ksColumn.setCellValueFactory(new PropertyValueFactory<>("pocet"));
         cenaColumn.setCellValueFactory(new PropertyValueFactory<>("cena"));
         zvukColumn.setCellValueFactory(new PropertyValueFactory<>("zvuk"));
 
-        // For columns that don't exist on base class, we need custom cell factories
+        // Upravenie stlpcov podla typu nastroja
         pocetZvukovColumn.setCellValueFactory(cellData -> {
             Nastroj nastroj = cellData.getValue();
             if (nastroj instanceof RytmickyNastroj) {
@@ -78,7 +89,7 @@ public class HelloController {
             return javafx.beans.binding.Bindings.createObjectBinding(() -> null);
         });
 
-        // Load instruments from JSON
+        // Nacitanie zo suboru json
         try {
             String filePath = "nastroje.json";
             instrumentTableView.setItems(JsonLoader.loadInstruments(filePath));
@@ -86,7 +97,7 @@ public class HelloController {
             e.printStackTrace();
         }
 
-        // Prefill inputs when selection changes
+        // Predvypln na upravu nastrojov
         instrumentTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, sel) -> {
             if (sel != null) {
                 try {
@@ -106,6 +117,7 @@ public class HelloController {
         });
     }
 
+    // Pridanie Nastroja
     @FXML
     protected void onAddInstrument() {
         Dialog<Nastroj> dialog = new Dialog<>();
@@ -116,7 +128,8 @@ public class HelloController {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.setPadding(new Insets(20, 150, 10, 10));
+        // use smaller right padding so dialog buttons remain visible
+        grid.setPadding(new Insets(20, 20, 10, 10));
 
         ComboBox<String> category = new ComboBox<>(FXCollections.observableArrayList("rytmicke", "dychove"));
         category.setValue("rytmicke");
@@ -175,7 +188,12 @@ public class HelloController {
         updateVisibility.run();
         category.valueProperty().addListener((obs, oldV, newV) -> updateVisibility.run());
 
-        dialog.getDialogPane().setContent(grid);
+        ScrollPane scroll = new ScrollPane(grid);
+        scroll.setFitToWidth(true);
+        scroll.setPrefViewportHeight(300);
+        dialog.getDialogPane().setContent(scroll);
+        dialog.getDialogPane().setMinHeight(Region.USE_COMPUTED_SIZE);
+        dialog.getDialogPane().setPrefHeight(Region.USE_COMPUTED_SIZE);
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == addButtonType) {
@@ -217,11 +235,7 @@ public class HelloController {
         });
     }
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
+    // Odstranenie nastroja
     @FXML
     protected void onDeleteInstrument() {
         Nastroj selected = instrumentTableView.getSelectionModel().getSelectedItem();
@@ -249,6 +263,7 @@ public class HelloController {
         }
     }
 
+    // Uprava nastroja
     @FXML
     protected void onUpdateInstrument() {
         Nastroj selected = instrumentTableView.getSelectionModel().getSelectedItem();
@@ -287,6 +302,8 @@ public class HelloController {
             ex.printStackTrace();
         }
     }
+
+    // Cena skadu
     @FXML
     protected void onCenaSkladu() {
         var items = instrumentTableView.getItems();
@@ -306,6 +323,8 @@ public class HelloController {
         sb.append(String.format("\nCelková hodnota skladu: %.2f", total));
         outputArea.setText(sb.toString());
     }
+
+    // Sklad hraj
     @FXML
     protected void onHrajBtnClick() {
 
@@ -323,6 +342,8 @@ public class HelloController {
         }
         outputArea.setText(sb.toString());
     }
+
+    // Zoznam nastrojov
     @FXML
     protected void onZoznamBtnClick() {
         var items = instrumentTableView.getItems();
@@ -357,8 +378,7 @@ public class HelloController {
                     n.getZvuk(),
                     pocetZvukov,
                     ladenie,
-                    pocetDier
-            ));
+                    pocetDier));
         }
 
         outputArea.setText(sb.toString());

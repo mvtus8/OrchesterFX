@@ -19,7 +19,7 @@ public class JsonLoader {
 
         String jsonContent = new String(Files.readAllBytes(Paths.get(filePath)));
 
-        // Extract all instrument objects from the JSON array
+        // Nacitanie zo suboru JSON
         Pattern objectPattern = Pattern.compile("\\{[^{}]*(?:\\{[^{}]*\\}[^{}]*)*\\}");
         Matcher matcher = objectPattern
                 .matcher(jsonContent.substring(jsonContent.indexOf("hudobne_nastroje"), jsonContent.lastIndexOf("}")));

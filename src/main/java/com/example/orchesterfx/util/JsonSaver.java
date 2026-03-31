@@ -59,7 +59,6 @@ public class JsonSaver {
 
         sb.append("\t]\n}");
 
-        // Write atomically
         Path tmp = file.resolveSibling(file.getFileName().toString() + ".tmp");
         Files.writeString(tmp, sb.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         Files.move(tmp, file, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
