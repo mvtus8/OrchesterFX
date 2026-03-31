@@ -3,52 +3,70 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.example.orchesterfx.HelloController"
             style="-fx-background-color: #1e1e2e;">
 
-    <!-- TOP: Toolbar s názvom a akciami skladu -->
+    <!-- TOP: Toolbar -->
     <top>
         <HBox alignment="CENTER_LEFT" spacing="16"
               style="-fx-background-color: #181825; -fx-border-color: #313244; -fx-border-width: 0 0 1 0;">
             <padding><Insets top="14" right="24" bottom="14" left="24"/></padding>
-            <Label text="🎼 Orchester FX" style="-fx-text-fill: #cdd6f4; -fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Label text="🎼 Orchester FX"
+                   style="-fx-text-fill: #cdd6f4; -fx-font-size: 20px; -fx-font-weight: bold;"/>
             <Region HBox.hgrow="ALWAYS"/>
             <Button text="💰 Cena Skladu"
+                    onAction="#onCenaSkladu"
                     style="-fx-background-color: #313244; -fx-text-fill: #a6e3a1; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 8 18 8 18;"/>
+            <Button text="📋 Zoznam"
+                    onAction="#onZoznamBtnClick"
+                    style="-fx-background-color: #313244; -fx-text-fill: #f9e2af; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 8 18 8 18;"/>
             <Button text="▶ Sklad Hraj"
+                    onAction="#onHrajBtnClick"
                     style="-fx-background-color: #313244; -fx-text-fill: #89dceb; -fx-font-size: 13px; -fx-cursor: hand; -fx-background-radius: 6; -fx-padding: 8 18 8 18;"/>
         </HBox>
     </top>
 
-    <!-- CENTER: Tabuľka -->
+    <!-- CENTER: Tabuľka + výstup vedľa seba -->
     <center>
-        <VBox spacing="0" style="-fx-background-color: #1e1e2e;">
-            <padding><Insets top="20" right="24" bottom="0" left="24"/></padding>
+        <HBox spacing="16" VBox.vgrow="ALWAYS" style="-fx-background-color: #1e1e2e;">
+            <padding><Insets top="20" right="24" bottom="16" left="24"/></padding>
 
-            <Label text="Zoznam nástrojov"
-                   style="-fx-text-fill: #cdd6f4; -fx-font-size: 15px; -fx-font-weight: bold;"/>
-            <VBox.margin><Insets bottom="10"/></VBox.margin>
+            <!-- Ľavá strana: tabuľka -->
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="Zoznam nástrojov"
+                       style="-fx-text-fill: #cdd6f4; -fx-font-size: 15px; -fx-font-weight: bold;"/>
+                <TableView fx:id="instrumentTableView" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #181825; -fx-border-color: #313244; -fx-border-radius: 8; -fx-background-radius: 8;">
+                    <columns>
+                        <TableColumn fx:id="druhColumn"        text="Druh"         prefWidth="150"/>
+                        <TableColumn fx:id="ksColumn"          text="Ks"           prefWidth="60"/>
+                        <TableColumn fx:id="cenaColumn"        text="Cena (€)"     prefWidth="100"/>
+                        <TableColumn fx:id="zvukColumn"        text="Zvuk"         prefWidth="110"/>
+                        <TableColumn fx:id="pocetZvukovColumn" text="Počet zvukov" prefWidth="120"/>
+                        <TableColumn fx:id="laDenieColumn"     text="Ladenie"      prefWidth="90"/>
+                        <TableColumn fx:id="pocetDierColumn"   text="Počet dier"   prefWidth="110"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+            </VBox>
 
-            <TableView fx:id="instrumentTableView" VBox.vgrow="ALWAYS"
-                       style="-fx-background-color: #181825; -fx-border-color: #313244; -fx-border-radius: 8; -fx-background-radius: 8;">
-                <columns>
-                    <TableColumn fx:id="druhColumn"        text="Druh"        prefWidth="160"/>
-                    <TableColumn fx:id="ksColumn"          text="Ks"          prefWidth="70"/>
-                    <TableColumn fx:id="cenaColumn"        text="Cena (€)"    prefWidth="110"/>
-                    <TableColumn fx:id="zvukColumn"        text="Zvuk"        prefWidth="120"/>
-                    <TableColumn fx:id="pocetZvukovColumn" text="Počet zvukov" prefWidth="130"/>
-                    <TableColumn fx:id="laDenieColumn"     text="Ladenie"     prefWidth="100"/>
-                    <TableColumn fx:id="pocetDierColumn"   text="Počet dier"  prefWidth="120"/>
-                </columns>
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                </columnResizePolicy>
-            </TableView>
-        </VBox>
+            <!-- Pravá strana: výstupná oblasť -->
+            <VBox spacing="8" prefWidth="320" minWidth="220">
+                <Label text="Výstup"
+                       style="-fx-text-fill: #cdd6f4; -fx-font-size: 15px; -fx-font-weight: bold;"/>
+                <TextArea fx:id="outputArea"
+                          editable="false"
+                          wrapText="true"
+                          VBox.vgrow="ALWAYS"
+                          style="-fx-background-color: #181825; -fx-text-fill: #cdd6f4; -fx-border-color: #313244; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-size: 12px; -fx-font-family: monospace;"/>
+            </VBox>
+
+        </HBox>
     </center>
 
     <!-- BOTTOM: Editačný panel -->
@@ -61,7 +79,6 @@
             <VBox.margin><Insets bottom="10"/></VBox.margin>
 
             <HBox spacing="16" alignment="CENTER_LEFT">
-                <!-- Vstupné polia -->
                 <VBox spacing="6" HBox.hgrow="ALWAYS">
                     <Label text="Názov" style="-fx-text-fill: #6c7086; -fx-font-size: 11px;"/>
                     <TextField fx:id="inputNazov" promptText="Názov nástroja"
@@ -81,7 +98,6 @@
                                style="-fx-background-color: #313244; -fx-text-fill: #cdd6f4; -fx-prompt-text-fill: #6c7086; -fx-border-color: #45475a; -fx-border-radius: 5; -fx-background-radius: 5; -fx-font-size: 13px; -fx-padding: 8 12 8 12;"/>
                 </VBox>
 
-                <!-- Akčné tlačidlá -->
                 <VBox spacing="6" alignment="BOTTOM_LEFT">
                     <Label text="Akcie" style="-fx-text-fill: #6c7086; -fx-font-size: 11px;"/>
                     <HBox spacing="8">
